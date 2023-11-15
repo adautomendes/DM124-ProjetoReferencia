@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 module.exports = {
-    DB_URL: 'mongodb://localhost:27017',
+    DB_URL: `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}`,
 
     DB_SETTINGS: {
-        dbName: 'petstore'
+        dbName: `${process.env.MONGODB_DBNAME}`
     }
 };
 

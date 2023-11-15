@@ -1,6 +1,8 @@
 // Importe o módulo Express
 const express = require('express');
 const routes = require('./routes');
+// Importe o módulo dotenv
+require('dotenv').config();
 // Importe o módulo do mongoose
 const mongoose = require(`mongoose`);
 // Importe as configurações do BD
