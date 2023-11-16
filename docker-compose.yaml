@@ -4,26 +4,43 @@ services:
   mongo-db:
     image: "mongo"
     restart: unless-stopped
+    command: 
+      - '--logpath'
+      - '/var/log/mongodb/mongod.log'
     ports:
       - "27017:27017"
     networks:
       - services-network
 
+  auth:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./auth
+    ports:
+      - "3001:3001"
+    networks:
+      - services-network
+    environment:
+      - PORT=3001
+      - TEMPO_EXP=1m
+
   petstore:
     build:
       dockerfile: ./Dockerfile
-      context: ./
+      context: ./petstore
     ports:
       - "3000:3000"
     networks:
       - services-network
     depends_on:
+      - auth
       - mongo-db
     environment:
       - PORT=3000
       - MONGODB_HOST=mongo-db
       - MONGODB_PORT=27017
       - MONGODB_DBNAME=petstore
+      - AUTH_SERVER=http://auth:3001
 
 networks:
   services-network:
