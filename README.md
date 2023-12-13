@@ -12,6 +12,7 @@ Este projeto é composto por dois microserviços desenvolvidos em Node.js utiliz
 Este é o serviço que gerencia as entidades Pet (que estão no domínio de negócios do projeto). Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `petstore/.env`:  
 
 `PORT`: porta utilizada pelo serviço Petstore.  
+`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod);
 `MONGODB_HOST`: host do banco de dados MongoDB.  
 `MONGODB_PORT`: porta do banco de dados MongoDB.  
 `MONGODB_DBNAME`: nome do esquema que será utilizado pela aplicação no banco de dados MongoDB.  
@@ -34,6 +35,7 @@ Este serviço é responsável por duas funções:
 Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `auth/.env`:  
 
 `PORT`: porta utilizada pelo serviço Auth.  
+`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod);
 `CHAVE_PRIVADA`: chave de criptografia privada utilizada no encode/decode do token JWT.  
 `TEMPO_EXP`: tempo de expiração do token JWT.  
 

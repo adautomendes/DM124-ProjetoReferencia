@@ -22,6 +22,7 @@ services:
       - services-network
     environment:
       - PORT=3001
+      - NODE_ENV=prod
       - TEMPO_EXP=1m
 
   petstore:
@@ -37,6 +38,7 @@ services:
       - mongo-db
     environment:
       - PORT=3000
+      - NODE_ENV=prod
       - MONGODB_HOST=mongo-db
       - MONGODB_PORT=27017
       - MONGODB_DBNAME=petstore
