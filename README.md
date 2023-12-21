@@ -35,7 +35,7 @@ Este serviço é responsável por duas funções:
 Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `auth/.env`:  
 
 `PORT`: porta utilizada pelo serviço Auth.  
-`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod);
+`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod);  
 `CHAVE_PRIVADA`: chave de criptografia privada utilizada no encode/decode do token JWT.  
 `TEMPO_EXP`: tempo de expiração do token JWT.  
 
