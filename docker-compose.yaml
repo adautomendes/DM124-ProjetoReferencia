@@ -1,8 +1,7 @@
-version: "3.8"
-
 services:
   mongo-db:
     image: "mongo"
+    container_name: "dm124-mongo"
     restart: unless-stopped
     command: 
       - '--logpath'
@@ -16,6 +15,7 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ./auth
+    container_name: "dm124-auth"
     ports:
       - "3001:3001"
     networks:
@@ -29,6 +29,7 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ./petstore
+    container_name: "dm124-petstore"
     ports:
       - "3000:3000"
     networks:
