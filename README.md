@@ -2,7 +2,7 @@
 
 Este projeto se trata de um exemplo didático de como se utilizar de um mecanismo de token exchange/validation para realizar autenticação em uma arquitetura de microserviços utilizando JWT. O projeto também demonstra como gerenciar persistência de dados em um projeto Node.js com MongoDB bem como o monitoramento das aplicações utilizando mecanismo de alarmes.  
 
-Este projeto é composto por três microserviços desenvolvidos em Node.js utilizando Express que se comunicam entre si e também com um banco de dados não relacional MongoDB. O projeto segue a estrtura abaixo:  
+Este projeto é composto por três microserviços desenvolvidos em Node.js utilizando Express que se comunicam entre si e também com um banco de dados não relacional MongoDB. O projeto segue a estrutura abaixo:  
 
 ![Estrutura do projeto](docs/img/deployment.png)
 
@@ -15,8 +15,8 @@ Este é o serviço que gerencia as entidades Pet (que estão no domínio de neg�
 `MONGODB_HOST`: host do banco de dados MongoDB.  
 `MONGODB_PORT`: porta do banco de dados MongoDB.  
 `MONGODB_DBNAME`: nome do esquema que será utilizado pela aplicação no banco de dados MongoDB.  
-`AUTH_SERVER`: endereço completo da localização do serviço Auth, e.g, `http://localhost:3001`  
-`ALARME_SERVER`: endereço completo da localização do serviço Alarme, e.g, `http://localhost:3002`  
+`AUTH_SERVER`: endereço completo da localização do serviço Auth, e.g, `http://localhost:3001`.  
+`ALARME_SERVER`: endereço completo da localização do serviço Alarme, e.g, `http://localhost:3002`.  
 
 ### Rotas disponíveis
 
@@ -24,7 +24,7 @@ Abaixo temos as rotas disponíveis pelo serviço Petstore (importe o arquivo `DM
 
 `POST http://<petstore_host>:<petstore_port>/pet`: Cria um novo Pet.  
 `GET http://<petstore_host>:<petstore_port>/pet`: Busca todos os Pets.  
-`GET http://<petstore_host>:<petstore_port>/pet?nome=<nome>`: Busca Pet por nome.  
+`GET http://<petstore_host>:<petstore_port>/pet?nome={nome}`: Busca Pet por nome.  
 
 ## Serviço Auth
 
@@ -62,8 +62,8 @@ Este serviço é responsável pelo monitoramento de eventos dos demais microserv
 ```
 Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `alarme/.env`:  
 
-`PORT`: porta utilizada pelo serviço Auth.  
-`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod);  
+`PORT`: porta utilizada pelo serviço Alarme.  
+`NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod).  
 
 ### Rotas disponíveis
 
@@ -72,7 +72,7 @@ Abaixo temos as rotas disponíveis pelo serviço Alarme (importe o arquivo `DM12
 `POST http://<alarme_host>:<alarme_port>/alarme/{id}/ativar`: Ativa o alarme baseado no ID fornecido como path parameter.  
 `POST http://<alarme_host>:<alarme_port>/alarme/{id}/desativar`: Desativa o alarme baseado no ID fornecido como path parameter.  
 `GET http://<alarme_host>:<alarme_port>/alarme`: Lista todos os alarmes.  
-`GET http://<alarme_host>:<alarme_port>/alarme?ativo=[true|false]`: Busca alarmes ativados (ativo=true) ou desativados (ativo=false).  
+`GET http://<alarme_host>:<alarme_port>/alarme?ativo={true|false}`: Busca alarmes ativados (ativo=true) ou desativados (ativo=false).  
 
 ## Dependências e execução local
 
