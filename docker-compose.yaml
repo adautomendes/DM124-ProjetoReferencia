@@ -25,6 +25,19 @@ services:
       - NODE_ENV=prod
       - TEMPO_EXP=1m
 
+  alarme:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./alarme
+    container_name: "dm124-alarme"
+    ports:
+      - "3002:3002"
+    networks:
+      - services-network
+    environment:
+      - PORT=3002
+      - NODE_ENV=prod
+
   petstore:
     build:
       dockerfile: ./Dockerfile
@@ -44,6 +57,7 @@ services:
       - MONGODB_PORT=27017
       - MONGODB_DBNAME=petstore
       - AUTH_SERVER=http://auth:3001
+      - ALARME_SERVER=http://alarme:3002
 
 networks:
   services-network:
