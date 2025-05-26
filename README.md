@@ -16,7 +16,7 @@ Este é o serviço que gerencia as entidades Pet (que estão no domínio de neg�
 `MONGODB_PORT`: porta do banco de dados MongoDB.  
 `MONGODB_DBNAME`: nome do esquema que será utilizado pela aplicação no banco de dados MongoDB.  
 `AUTH_SERVER`: endereço completo da localização do serviço Auth, e.g, `http://localhost:3001`.  
-`ALARME_SERVER`: endereço completo da localização do serviço Alarme, e.g, `http://localhost:3002`.  
+`MONITOR_SERVER`: endereço completo da localização do serviço Alarme, e.g, `http://localhost:3002`.  
 
 ### Rotas disponíveis
 
@@ -46,9 +46,9 @@ Abaixo temos as rotas disponíveis pelo serviço Auth (importe o arquivo `DM124.
 `POST http://<auth_host>:<auth_port>/auth/login`: Realiza o login gerando o token baseado no usuário e senha.  
 `POST http://<auth_host>:<auth_port>/auth/validaToken`: Valida se o token passado na request é valido.  
 
-## Serviço Alarme
+## Serviço Monitor
 
-Este serviço é responsável pelo monitoramento de eventos dos demais microserviços. Os alarmes devem ser cadastrados no arquivo `alarme/src/controllers/AlarmeController.js` no seguinte formato:
+Este serviço é responsável pelo monitoramento de eventos dos demais microserviços. Os alarmes devem ser cadastrados no arquivo `monitor/src/controllers/AlarmeController.js` no seguinte formato:
 
 ```json
 [
@@ -60,23 +60,23 @@ Este serviço é responsável pelo monitoramento de eventos dos demais microserv
     }
 ]
 ```
-Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `alarme/.env`:  
+Para configurar a sua execução deve-se alterar os valores definidos no arquivo de variáveis de ambiente `monitor/.env`:  
 
-`PORT`: porta utilizada pelo serviço Alarme.  
+`PORT`: porta utilizada pelo serviço Monitor.  
 `NODE_ENV`: define o tipo de ambiente onde o projeto será executado (dev ou prod).  
 
 ### Rotas disponíveis
 
-Abaixo temos as rotas disponíveis pelo serviço Alarme (importe o arquivo `DM124.postman_collection.json` no Postman para exemplos de payloads):
+Abaixo temos as rotas disponíveis pelo serviço Monitor (importe o arquivo `DM124.postman_collection.json` no Postman para exemplos de payloads):
 
-`POST http://<alarme_host>:<alarme_port>/alarme/{id}/ativar`: Ativa o alarme baseado no ID fornecido como path parameter.  
-`POST http://<alarme_host>:<alarme_port>/alarme/{id}/desativar`: Desativa o alarme baseado no ID fornecido como path parameter.  
-`GET http://<alarme_host>:<alarme_port>/alarme`: Lista todos os alarmes.  
-`GET http://<alarme_host>:<alarme_port>/alarme?ativo={true|false}`: Busca alarmes ativados (ativo=true) ou desativados (ativo=false).  
+`POST http://<monitor_host>:<monitor_port>/alarme/{id}/ativar`: Ativa o alarme baseado no ID fornecido como path parameter.  
+`POST http://<monitor_host>:<monitor_port>/alarme/{id}/desativar`: Desativa o alarme baseado no ID fornecido como path parameter.  
+`GET http://<monitor_host>:<monitor_port>/alarme`: Lista todos os alarmes.  
+`GET http://<monitor_host>:<monitor_port>/alarme?ativo={true|false}`: Busca alarmes ativados (ativo=true) ou desativados (ativo=false).  
 
 ## Dependências e execução local
 
-Para rodar o projeto localmente (após configurar corretamente os arquivos `petstore/.env`, `auth/.env` e `alarme/.env`) abra três terminais - um na pasta `petstore`, um na pasta `auth` e um na pasta `alarme` - e execute os mesmos comandos em ambas:
+Para rodar o projeto localmente (após configurar corretamente os arquivos `petstore/.env`, `auth/.env` e `monitor/.env`) abra três terminais - um na pasta `petstore`, um na pasta `auth` e um na pasta `monitor` - e execute os mesmos comandos em ambas:
 
 ```shell
 npm install

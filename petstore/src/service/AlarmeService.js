@@ -4,7 +4,7 @@ const axios = require('axios');
 module.exports = {
     gerenciarAlarme(alarmeId, acao) {
         // Enviando request para o alarme ativando/desativando os alarmes 
-        axios.post(`${process.env.ALARME_SERVER}/alarme/${alarmeId}/${acao}`)
+        axios.post(`${process.env.MONITOR_SERVER}/alarme/${alarmeId}/${acao}`)
             .then(response => {
                 console.log(`Alarme alterado: ${JSON.stringify(response.data)}`);
             })
