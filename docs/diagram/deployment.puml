@@ -1,0 +1,20 @@
+@startuml
+scale 2
+left to right direction
+
+actor User
+package "Projeto DM124" {
+  [auth] as auth
+  [petstore] as petstore
+  [alarm] as alarm
+  [MongoDB] as db
+}
+
+User --> auth : Geração de token
+User --> petstore : Criação/Leitura\nde pets
+User --> alarm : Leitura\nde alarmes
+petstore --> db : Persistência de dados
+petstore --> alarm : Notificação de eventos
+petstore --> auth : Validação de token
+
+@enduml

@@ -5,7 +5,7 @@ Este projeto se trata de um exemplo didático de como se utilizar de um mecanism
 
 Este projeto é composto por dois microserviços desenvolvidos em Node.js utilizando Express que se comunicam entre si e também com um banco de dados não relacional MongoDB. O projeto segue a estrtura abaixo:  
 
-![Estrutura do projeto](docs/img/diagrama.png)
+![Estrutura do projeto](docs/img/deployment.png)
 
 ### Serviço Petstore
 
