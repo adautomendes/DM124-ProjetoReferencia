@@ -1,5 +1,4 @@
-# Projeto referência da disciplina 
-## DM124 - Desenvolvimento de Web Services com segurança sob plataforma Node.js
+# Projeto referência da disciplina DM124 - Desenvolvimento de Web Services com segurança sob plataforma Node.js
 
 Este projeto se trata de um exemplo didático de como se utilizar de um mecanismo de token exchange/validation para realizar autenticação em uma arquitetura de microserviços utilizando JWT. O projeto também demonstra como gerenciar persistência de dados em um projeto Node.js com MongoDB bem como o monitoramento das aplicações utilizando mecanismo de alarmes.  
 
