@@ -6,15 +6,15 @@ actor User
 package "Projeto DM124" {
   [auth] as auth
   [petstore] as petstore
-  [alarm] as alarm
+  [monitor] as monitor
   [MongoDB] as db
 }
 
 User --> auth : Geração de token
 User --> petstore : Criação/Leitura\nde pets
-User --> alarm : Leitura\nde alarmes
+User --> monitor : Leitura\nde monitores
 petstore --> db : Persistência de dados
-petstore --> alarm : Notificação de eventos
+petstore --> monitor : Notificação de eventos
 petstore --> auth : Validação de token
 
 @enduml
