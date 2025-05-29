@@ -50,6 +50,7 @@ services:
     depends_on:
       - auth
       - mongo-db
+      - monitor
     environment:
       - PORT=3000
       - NODE_ENV=prod
