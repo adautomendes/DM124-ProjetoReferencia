@@ -3,13 +3,13 @@ services:
     image: "mongo"
     container_name: "dm124-mongo"
     restart: unless-stopped
-    command: 
+    command:
       - '--logpath'
       - '/var/log/mongodb/mongod.log'
     ports:
       - "27017:27017"
     networks:
-      - services-network
+      - dm124-network
 
   auth:
     build:
@@ -19,11 +19,13 @@ services:
     ports:
       - "3001:3001"
     networks:
-      - services-network
+      - dm124-network
     environment:
-      - PORT=3001
+      - APP_NAME=auth
+      - PORTA=3001
+      - CHAVE_PRIVADA=UmaChaveBemGrandeParaDificultarODecode
+      - TEMPO_EXP=1d
       - NODE_ENV=prod
-      - TEMPO_EXP=1m
 
   monitor:
     build:
@@ -33,9 +35,14 @@ services:
     ports:
       - "3002:3002"
     networks:
-      - services-network
+      - dm124-network
+    depends_on:
+      - auth
     environment:
-      - PORT=3002
+      - APP_NAME=monitor
+      - PORTA=3002
+      - SKIP_AUTH=petstore
+      - AUTH_SERVER=auth:3001
       - NODE_ENV=prod
 
   petstore:
@@ -46,20 +53,22 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - services-network
+      - dm124-network
     depends_on:
-      - auth
       - mongo-db
+      - auth
       - monitor
     environment:
-      - PORT=3000
-      - NODE_ENV=prod
+      - APP_NAME=petstore
+      - PORTA=3000
       - MONGODB_HOST=mongo-db
       - MONGODB_PORT=27017
-      - MONGODB_DBNAME=petstore
-      - AUTH_SERVER=http://auth:3001
-      - MONITOR_SERVER=http://monitor:3002
+      - MONGODB_NAME=petstore
+      - AUTH_SERVER=auth:3001
+      - MONITOR_SERVER=monitor:3002
+      - NODE_ENV=prod
+    
 
 networks:
-  services-network:
+  dm124-network:
     driver: bridge

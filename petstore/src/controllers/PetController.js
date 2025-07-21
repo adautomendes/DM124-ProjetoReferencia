@@ -1,43 +1,91 @@
-const Pet = require(`../models/Pet`);
+const Pet = require('../models/Pet');
 
 module.exports = {
+    /**
+    POST http://localhost:3000/pet
+    {
+        "nome": "Rex",
+        "raca": "Boxer",
+        "idade": 22
+    }
+    */
     async inserir(req, res) {
-        const petRequest = req.body;
+        const { nome, raca, idade } = req.body;
 
-        // Testando se já existe um Pet com o mesmo nome
-        // Equivalente a 'SELECT * FROM pet WHERE nome = pet.nome'
-        const petExistente = await Pet.findOne({ nome: petRequest.nome });
+        const petExistente = await Pet.findOne({ nome });
 
         if (petExistente) {
-            console.log(`${petExistente.nome} já existe.`);
-            // Retornando 200 pois nada foi inserido.
             return res.status(200).json(petExistente);
         }
 
-        const pet = await Pet.create({
-            nome: petRequest.nome,
-            raca: petRequest.raca,
-            idade: petRequest.idade
+        const petCriado = await Pet.create({
+            nome: nome,
+            raca: raca,
+            idade: idade
         });
 
-        console.log(`${pet.nome} criado!`);
-        // Retornando 201 pois um novo recurso foi inserido.
-        return res.status(201).json(pet);
+        return res.status(201).json(petCriado);
     },
 
-    async buscar(req, res) {
-        const nomeQuery = req.query.nome;
-        let pets = [];
+    async atualizar(req, res) {
+        const { nome } = req.params;
+        const { idade } = req.body;
 
-        if (nomeQuery) {
-            pets = await Pet.find({ nome: nomeQuery });
+        // UPDATE Pet SET idade = XX WHERE NOME = XX
+        const resUpdate = await Pet.updateOne({ nome }, { idade });
+
+        if (resUpdate.modifiedCount === 1) {
+            const petAtualizado = await Pet.find({ nome });
+            return res.status(200).json(petAtualizado[0]);
         } else {
-            pets = await Pet.find();
+            return res.status(404).json({
+                codigo: 'PET0002',
+                msg: `Pet com nome '${nome}' não encontrado.`
+            });
+        }
+    },
+
+    /**
+    GET http://localhost:3000/pet
+    */
+    async buscar(req, res) {
+        // Spread operator
+        let queryParams = { ...req.query };
+        let petList = await Pet.find(queryParams);
+
+        return res.status(200).json({
+            count: petList.length,
+            petList
+        });
+    },
+
+    async excluir(req, res) {
+        const { nome } = req.params;
+
+        let petList = await Pet.find({ nome });
+
+        if (petList.length > 0) {
+            await Pet.deleteOne({ nome });
+            return res.status(204).json();
+        } else {
+            return res.status(404).json({
+                codigo: 'PET0002',
+                msg: `Pet com nome '${nome}' não encontrado.`
+            });
         }
 
-        console.log(`${pets.length} pets encontrados!`);
-
-        return res.status(200).json(pets);
     },
-};
 
+    validaPet(req, res, next) {
+        const { idade } = req.body;
+
+        if (idade < 0 || idade > 100) {
+            return res.status(400).json({
+                codigo: 'PET0001',
+                msg: 'Idade do pet inválida.'
+            });
+        } else {
+            next();
+        }
+    }
+}

@@ -1,58 +1,52 @@
 const alarmeMap = {
-    "DB_0001": {
-        id: 'DB_0001',
-        descricao: 'MongoDB fora do ar.',
+    "DB0001": {
+        id: "DB0001",
+        descricao: "MongoDB está fora do ar.",
         ativo: false,
-        ativacoes: [],
+        ativacoes: []
     }
-};
+}
 
 module.exports = {
-    async ativar(req, res) {
-        const alarmeId = req.params.id;
+    alterar(req, res) {
+        const { id, acao } = req.params;
 
-        // Verificando se o alarme existe
-        if (!alarmeMap[alarmeId]) {
-            console.log(`Alarme ${alarmeId} não encontrado.`);
-            return res.status(404).json({ msg: `Alarme não encontrado.` });
+        if (acao === 'ativar') {
+            alarmeMap[id].ativo = true;
+            alarmeMap[id].ativacoes.push(new Date());
         }
 
-        // Ativando o alarme
-        alarmeMap[alarmeId].ativo = true;
-        alarmeMap[alarmeId].ativacoes.push(new Date());
-
-        console.log(`Alarme ${alarmeId} ativado!`);
-        return res.status(200).json(alarmeMap[alarmeId]);
-    },
-
-    async desativar(req, res) {
-        const alarmeId = req.params.id;
-
-        // Verificando se o alarme existe
-        if (!alarmeMap[alarmeId]) {
-            console.log(`Alarme ${alarmeId} não encontrado.`);
-            return res.status(404).json({ msg: `Alarme não encontrado.` });
+        if (acao === 'desativar') {
+            alarmeMap[id].ativo = false;
+            alarmeMap[id].ativacoes = [];
         }
 
-        // Desativando o alarme
-        alarmeMap[alarmeId].ativo = false;
-        alarmeMap[alarmeId].ativacoes = [];
-
-        console.log(`Alarme ${alarmeId} desativado!`);
-        return res.status(200).json(alarmeMap[alarmeId]);
+        return res.status(200).json(alarmeMap[id]);
     },
 
-    async buscar(req, res) {
-        const ativoQuery = req.query.ativo;
+    buscar(req, res) {
+        const { ativo } = req.query;
 
-        // Se a query ativado for fornecida, filtra os alarmes
-        if (ativoQuery) {
+        if (ativo) {
             const list = Object.values(alarmeMap).filter(alarme => {
-                return String(alarme.ativo) === ativoQuery;
+                return String(alarme.ativo) === ativo;
             });
             return res.status(200).json(list);
         }
-        // Se não, retorna todos os alarmes
+
         return res.status(200).json(Object.values(alarmeMap));
     },
-};
+
+    validaAlarme(req, res, next) {
+        const { id } = req.params;
+
+        if (!alarmeMap[id]) {
+            return res.status(404).json({
+                codigo: 'MON0001',
+                msg: 'Alarme não encontrado'
+            });
+        } else {
+            next();
+        }
+    }
+}

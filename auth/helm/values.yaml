@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/pessoal-466617/docker-repo/dm124-auth
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3001  # PORTA value used here
+
+env:
+  APP_NAME: auth
+  PORTA: "3001"
+  CHAVE_PRIVADA: UmaChaveBemGrandeParaDificultarODecode
+  TEMPO_EXP: 1d
+  NODE_ENV: dev
+
+resources: {}

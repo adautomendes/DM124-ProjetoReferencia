@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/pessoal-466617/docker-repo/dm124-monitor
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3002  # PORTA value used here
+
+env:
+  APP_NAME: monitor
+  PORTA: "3002"
+  SKIP_AUTH: petstore,auth,monitor
+  AUTH_SERVER: auth-auth-auth:3001
+  NODE_ENV: dev
+
+resources: {}

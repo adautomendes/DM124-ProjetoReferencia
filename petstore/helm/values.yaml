@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/pessoal-466617/docker-repo/dm124-petstore
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000  # PORTA value used here
+
+env:
+  APP_NAME: petstore
+  PORTA: 3000
+  MONGODB_HOST: mongo-service
+  MONGODB_PORT: 27017
+  MONGODB_NAME: petstore
+  AUTH_SERVER: auth-service:3001
+  MONITOR_SERVER: monitor-service:3002
+  NODE_ENV: dev
+
+resources: {}

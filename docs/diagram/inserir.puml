@@ -1,0 +1,36 @@
+@startuml
+
+actor User
+participant Petstore
+participant Auth
+database MongoDB
+
+User -> Petstore: POST /pet
+Petstore -> Auth: POST /auth/validaToken
+
+alt Token inválido
+    Petstore -> User: 401 Unauthorized
+end
+
+Auth -> Petstore: Token válido
+Petstore -> Petstore: validaPet
+
+alt Idade inválida
+    Petstore -> User: 400 Bad Request
+end
+
+Petstore -> MongoDB : SELECT Pet by nome
+
+alt Pet com nome existente
+    MongoDB -> Petstore: Pet encontrado
+    Petstore -> User: 200 OK
+end
+
+alt Pet não existente com esse nome
+    MongoDB -> Petstore: Pet não encontrado
+    Petstore -> MongoDB : INSERT Pet
+    MongoDB -> Petstore: Ok
+    Petstore -> User: 201 Created
+end
+
+@enduml

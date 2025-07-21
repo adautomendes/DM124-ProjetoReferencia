@@ -1,0 +1,5 @@
+apiVersion: v2
+name: monitor
+description: Helm chart for Node.js monitor service
+version: 0.1.0
+appVersion: "1.0.0"

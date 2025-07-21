@@ -1,38 +1,51 @@
-const jwt = require(`jsonwebtoken`);
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
+require('dotenv').config({ quiet: true });
 
 module.exports = {
     login(req, res) {
-        let user = req.body.user;
-        let pass = req.body.pass;
+        const { user, pass } = req.body;
 
-        if (user && pass) {
+        if (user && pass) { // User e pass são válidos
             let token = jwt.sign({ user, pass }, process.env.CHAVE_PRIVADA, {
-                expiresIn: `${process.env.TEMPO_EXP}`
+                expiresIn: process.env.TEMPO_EXP
             });
 
-            console.log(`Usuário ${user} logado.`);
-            return res.status(200).json({ token, expiresIn: `${process.env.TEMPO_EXP}` });
-        } else {
-            return res.status(401).json({ msg: `Login inválido.` });
+            console.log(`Usuário ${user} logado com sucesso...`);
+            return res.status(200).json({
+                user,
+                token
+            });
         }
+
+        return res.status(401).json({
+            codigo: 'AUTH0001',
+            msg: "Usuário ou senha inválidos."
+        });
     },
+    validaToken(req, res) {
+        const { token } = req.headers;
 
-    verificaJWT(req, res) {
-        const tokenRequest = req.headers.token;
-
-        if (tokenRequest) {
-            console.log(`Verificando token ${tokenRequest.slice(0, 10)}...`);
-
-            jwt.verify(tokenRequest, process.env.CHAVE_PRIVADA, (error, decoded) => {
-                if (error) {
-                    return res.status(401).json({ msg: `Token inválido.`, token: tokenRequest, error });
+        if (token) {
+            jwt.verify(token, process.env.CHAVE_PRIVADA, (erro, decoded) => {
+                if (erro) {
+                    return res.status(401).json({
+                        codigo: 'AUTH0003',
+                        msg: "Token inválido.",
+                        token,
+                        erro
+                    });
                 } else {
-                    return res.status(200).json({ user: decoded.user, token: tokenRequest });
+                    return res.status(200).json({
+                        user: decoded.user,
+                        token
+                    });
                 }
-            });
+            })
         } else {
-            return res.status(401).json({ msg: `Token não fornecido.` });
+            return res.status(401).json({
+                codigo: 'AUTH0002',
+                msg: "Token não fornecido."
+            });
         }
-    },
-};
+    }
+}

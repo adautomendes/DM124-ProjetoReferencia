@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "petstore.fullname" . }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "petstore.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "petstore.fullname" . }}
+    spec:
+      containers:
+        - name: petstore
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: APP_NAME
+              value: "{{ .Values.env.APP_NAME }}"
+            - name: PORTA
+              value: "{{ .Values.env.PORTA }}"
+            - name: MONGODB_HOST
+              value: "{{ .Values.env.MONGODB_HOST }}"
+            - name: MONGODB_PORT
+              value: "{{ .Values.env.MONGODB_PORT }}"
+            - name: MONGODB_NAME
+              value: "{{ .Values.env.MONGODB_NAME }}"
+            - name: AUTH_SERVER
+              value: "{{ .Values.env.AUTH_SERVER }}"
+            - name: MONITOR_SERVER
+              value: "{{ .Values.env.MONITOR_SERVER }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

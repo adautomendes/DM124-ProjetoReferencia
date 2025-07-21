@@ -1,88 +1,69 @@
-// Importe o módulo Express
 const express = require('express');
-// Importe o módulo Morgan
-const morgan = require('morgan');
-// Importe o módulo fs
+const mongoose = require('mongoose');
 const fs = require('fs');
-// Importe o módulo path
 const path = require('path');
+const morgan = require('morgan');
 const routes = require('./routes');
-// Importe o módulo dotenv
-require('dotenv').config();
-// Importe o módulo do mongoose
-const mongoose = require(`mongoose`);
-// Importe as configurações do BD
-const DB = require(`./src/database/config`);
-// Importe o serviço de alarmes
+const database = require('./src/database/config');
 const AlarmeService = require('./src/service/AlarmeService');
+require('dotenv').config({ quiet: true });
 
-// Crie uma aplicação Express
 const app = express();
 
-// Definindo que as requisições usaram body no formato JSON
 app.use(express.json());
 
-// Customizando o token 'body' para o morgan
 morgan.token('body', req => {
-    return JSON.stringify(req.body, null, 4);
+    return JSON.stringify(req.body, {}, 2);
 });
 
-// Definindo morgan como middleware do app
+morgan.token('headers', req => {
+    return JSON.stringify(req.headers, {}, 2);
+});
+
 if (process.env.NODE_ENV === 'dev') {
-    app.use(morgan(':method :url\n:body'));
+    app.use(morgan(':method :url\n:headers\n:body'));
 } else {
-    /**
-     * Assumiremos que se o NODE_ENV não
-     * for 'dev' por padrão será 'prod'.
-    */
-    // Definindo log para o console
     app.use(morgan('tiny'));
 
-    // Criando um file stream para armazenar o log
     const logFileStream = fs.createWriteStream(path.join(__dirname, 'app.log'), { flags: 'a' });
-    // Definindo log para o arquivo
-    app.use(morgan(':method :url\n:body', {
+    app.use(morgan(':method :url\n:headers\n:body', {
         stream: logFileStream
     }));
 }
 
-// Health check para o MongoDB
-let dbUp = true;
-
-mongoose.connection.on('connected', () => {
-    console.log(`[DESATIVAR ALARME] - DB up`);
-    dbUp = true;
-    AlarmeService.gerenciarAlarme('DB_0001', 'desativar');
-});
-
-mongoose.connection.on('disconnected', () => {
-    console.log(`[ATIVAR ALARME] - DB down`);
-    dbUp = false;
-    AlarmeService.gerenciarAlarme('DB_0001', 'ativar');
-});
-
 app.use((req, res, next) => {
-    console.log(`[MIDDLEWARE] - Health Check do MongoDB`);
     if (dbUp) {
         next();
     } else {
-        return res.status(503).json({ msg: "MongoDB fora do ar." });
+        return res.status(503).json({
+            codigo: 'PET0004',
+            msg: 'MongoDB fora do ar.'
+        })
     }
 });
 
-// Definindo as rotas para serem usadas na aplicação
 app.use(routes);
 
-//Configure a conexão com o MongoDB
-mongoose.connect(DB.DB_URL, DB.DB_SETTINGS)
-    .then(() => console.log(`Conectado ao MongoDB: ${DB.DB_URL}`))
-    .catch(err => console.log(`Erro ao conectar ao MongoDB: ${err}`));
+const porta = process.env.PORTA || 3000;
 
-// Configure a porta para o servidor escutar
-const porta = process.env.PORT || 3000;
+mongoose.connect(database.DB_URL, database.DB_SETTINGS)
+    .then(() => console.log('Conectado ao MongoDB.'))
+    .catch(erro => console.log(`Erro ao conectar ao MongoDB: ${erro}`));
 
-// Inicie o servidor e escute na porta especificada
-app.listen(porta, () => {
-    console.log(`O servidor está rodando em http://localhost:${porta}`);
+let dbUp = false;
+
+mongoose.connection.on('connected', () => {
+    console.log('[DESATIVAR ALARME] - DB up');
+    dbUp = true;
+    AlarmeService.gerenciarAlarme('DB0001', 'desativar');
 });
 
+mongoose.connection.on('disconnected', () => {
+    console.log('[ATIVAR ALARME] - DB down');
+    dbUp = false;
+    AlarmeService.gerenciarAlarme('DB0001', 'ativar');
+});
+
+app.listen(porta, function () {
+    console.log(`Petstore rodando na porta ${porta}`);
+});

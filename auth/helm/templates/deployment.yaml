@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "auth.fullname" . }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "auth.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "auth.fullname" . }}
+    spec:
+      containers:
+        - name: auth
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: APP_NAME
+              value: "{{ .Values.env.APP_NAME }}"
+            - name: PORTA
+              value: "{{ .Values.env.PORTA }}"
+            - name: CHAVE_PRIVADA
+              value: "{{ .Values.env.CHAVE_PRIVADA }}"
+            - name: TEMPO_EXP
+              value: "{{ .Values.env.TEMPO_EXP }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

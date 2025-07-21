@@ -1,15 +1,23 @@
-// Importando o módulo Axios
 const axios = require('axios');
 
 module.exports = {
     gerenciarAlarme(alarmeId, acao) {
-        // Enviando request para o alarme ativando/desativando os alarmes 
-        axios.post(`${process.env.MONITOR_SERVER}/alarme/${alarmeId}/${acao}`)
-            .then(response => {
-                console.log(`Alarme alterado: ${JSON.stringify(response.data)}`);
+        let request = {
+            url: `http://${process.env.MONITOR_SERVER}/alarme/${alarmeId}/${acao}`,
+            data: {},
+            config: {
+                headers: {
+                    app: `${process.env.APP_NAME}`
+                }
+            }
+        };
+
+        axios.patch(request.url, request.data, request.config)
+            .then(res => {
+                console.log(`Alarme ${alarmeId}: ${acao}`);
             })
-            .catch(error => {
-                console.error(`Erro ao alterar alarme: ${error.message}`);
+            .catch(erro => {
+                console.log(`${erro.message}`);
             });
     }
 }

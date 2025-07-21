@@ -1,5 +1,5 @@
-const print = (value) => console.log(value);
+const print = valor => console.log(valor);
 
-print("1");
-setTimeout(() => print("2"), 1000);
-print("3");
+setTimeout(() => print("1"), 1000);
+setTimeout(() => print("2"), 1500);
+setTimeout(() => print("3"), 1000);

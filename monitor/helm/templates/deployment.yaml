@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "monitor.fullname" . }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "monitor.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "monitor.fullname" . }}
+    spec:
+      containers:
+        - name: monitor
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: APP_NAME
+              value: "{{ .Values.env.APP_NAME }}"
+            - name: PORTA
+              value: "{{ .Values.env.PORTA }}"
+            - name: SKIP_AUTH
+              value: "{{ .Values.env.SKIP_AUTH }}"
+            - name: AUTH_SERVER
+              value: "{{ .Values.env.AUTH_SERVER }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

@@ -1,4 +1,4 @@
-const { Schema, model } = require(`mongoose`);
+const { Schema, model } = require('mongoose');
 
 const PetSchema = new Schema(
     {
@@ -7,9 +7,8 @@ const PetSchema = new Schema(
         idade: { type: Number, required: true }
     },
     {
-        timestamps: true
+        timestamps: true // createdAt e updatedAt
     }
 );
 
-module.exports = model(`Pet`, PetSchema);
-
+module.exports = model('Pet', PetSchema);
