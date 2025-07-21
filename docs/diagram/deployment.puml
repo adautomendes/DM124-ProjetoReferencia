@@ -12,7 +12,7 @@ package "Projeto DM124" {
 
 User --> auth : Geração de token
 User --> petstore : Criação/Leitura\nde pets
-User --> monitor : Leitura\nde monitores
+User --> monitor : Leitura\nde alarmes
 petstore --> db : Persistência de dados
 petstore --> monitor : Notificação de eventos
 petstore --> auth : Validação de token
