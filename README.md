@@ -4,7 +4,6 @@
 [![Express](https://img.shields.io/badge/Express-4.18+-blue)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?logo=mongodb)](https://www.mongodb.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](#licença)
 
 ## 📋 Visão Geral
 
