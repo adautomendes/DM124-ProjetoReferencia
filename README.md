@@ -1,73 +1,73 @@
-# DM124 - Arquitetura de Microserviços com Segurança em Node.js
+# Petstore Reference Project
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.18+-blue)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?logo=mongodb)](https://www.mongodb.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://www.docker.com/)
 
-## 📋 Visão Geral
+## 📋 Overview
 
-Projeto de referência da disciplina **DM124 - Desenvolvimento de Web Services com Segurança sob plataforma Node.js**.
+Reference project for the course **DM124 - Development of Web Services with Security on Node.js Platform**.
 
-Um exemplo didático completo de arquitetura de microserviços com autenticação JWT, comunicação inter-serviços e monitoramento com sistema de alarmes. O projeto demonstra boas práticas em desenvolvimento de aplicações seguras e escaláveis com Node.js.
+A comprehensive educational example of microservices architecture with JWT authentication, inter-service communication, and monitoring with an alarm system. The project demonstrates best practices in developing secure and scalable applications with Node.js.
 
-### Características Principais
+### Key Features
 
-- ✅ **Autenticação JWT**: Token exchange e validação entre serviços
-- ✅ **Microserviços Independentes**: Três serviços especializados comunicando-se via HTTP
-- ✅ **Persistência de Dados**: Integração com MongoDB
-- ✅ **Monitoramento em Tempo Real**: Sistema de alarmes para detecção de eventos
-- ✅ **Containerização**: Docker Compose para orquestração
-- ✅ **Desenvolvimento Facilitado**: Nodemon para reload automático
+- ✅ **JWT Authentication**: Token exchange and validation between services
+- ✅ **Independent Microservices**: Three specialized services communicating via HTTP
+- ✅ **Data Persistence**: MongoDB integration
+- ✅ **Real-Time Monitoring**: Alarm system for event detection
+- ✅ **Containerization**: Docker Compose orchestration
+- ✅ **Development Experience**: Nodemon for automatic reload
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-![Estrutura do projeto](docs/img/deployment.png)
+![Project Structure](docs/img/deployment.png)
 
-### Serviços da Arquitetura
+### Services Architecture
 
-| Serviço | Porta | Responsabilidade |
-|---------|-------|-----------------|
-| **Auth** | 3001 | Autenticação JWT e validação de tokens |
-| **Petstore** | 3000 | Gerenciamento de entidades Pet |
-| **Monitor** | 3002 | Monitoramento e sistema de alarmes |
-| **MongoDB** | 27017 | Armazenamento de dados |
+| Service | Port | Responsibility |
+|---------|------|-----------------|
+| **Auth** | 3001 | JWT authentication and token validation |
+| **Core** | 3000 | Pet entity management |
+| **Monitor** | 3002 | Monitoring and alarm system |
+| **MongoDB** | 27017 | Data storage |
 
 ---
 
 ## 🚀 Quick Start
 
-### Pré-requisitos
+### Prerequisites
 
 - **Node.js** 18+ ([download](https://nodejs.org/))
-- **npm** 9+ (incluído no Node.js)
+- **npm** 9+ (included with Node.js)
 - **MongoDB**
-- **Docker** e **Docker Compose**
+- **Docker** and **Docker Compose**
 
-### Instalação Local
+### Local Installation
 
-#### 1. Clone o Repositório
+#### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
-cd DM124-ProjetoReferencia
+cd petstore-ref-project
 ```
 
-#### 2. Configure as Variáveis de Ambiente
+#### 2. Configure Environment Variables
 
-Crie os arquivos `.env` em cada serviço:
+Create `.env` files in each service:
 
 **`auth/.env`**
 ```env
 PORT=3001
 NODE_ENV=dev
-CHAVE_PRIVADA=sua_chave_privada_segura_aqui
+CHAVE_PRIVADA=your_secure_private_key_here
 TEMPO_EXP=1h
 ```
 
-**`petstore/.env`**
+**`core/.env`**
 ```env
 PORT=3000
 NODE_ENV=dev
@@ -84,72 +84,72 @@ PORT=3002
 NODE_ENV=dev
 ```
 
-#### 3. Instale as Dependências e Inicie os Serviços
+#### 3. Install Dependencies and Start Services
 
-Em **três terminais separados**, execute:
+In **three separate terminals**, run:
 
-**Terminal 1 - Serviço Auth**
+**Terminal 1 - Auth Service**
 ```bash
 cd auth
 npm install
 npm run dev
 ```
 
-**Terminal 2 - Serviço Petstore**
+**Terminal 2 - Core Service**
 ```bash
-cd petstore
+cd core
 npm install
 npm run dev
 ```
 
-**Terminal 3 - Serviço Monitor**
+**Terminal 3 - Monitor Service**
 ```bash
 cd monitor
 npm install
 npm run dev
 ```
 
-✅ Todos os serviços estarão rodando. Você verá mensagens de log indicando que estão prontos para receber requisições.
+✅ All services will be running. You'll see log messages indicating they're ready to receive requests.
 
 ---
 
-## 🐳 Execução com Docker Compose
+## 🐳 Running with Docker Compose
 
-### Iniciar Todos os Serviços
+### Start All Services
 
 ```bash
 docker compose up --build
 ```
 
-Isto irá:
-- Construir as imagens Docker de cada serviço
-- Criar a rede de comunicação entre contêineres
-- Iniciar MongoDB, Auth, Petstore e Monitor
+This will:
+- Build Docker images for each service
+- Create the communication network between containers
+- Start MongoDB, Auth, Core, and Monitor
 
-Para parar os serviços:
+To stop the services:
 ```bash
 docker compose down
 ```
 
-### Testando Falha de Conectividade
+### Testing Connectivity Failure
 
-Para simular a falha de MongoDB e testar o sistema de alarmes:
+To simulate MongoDB failure and test the alarm system:
 
 ```bash
-docker stop dm124-mongo
+docker stop petstore-mongo
 ```
 
-Isso acionará os alarmes de indisponibilidade do banco de dados. Para reiniciar:
+This will trigger database unavailability alarms. To restart:
 
 ```bash
-docker start dm124-mongo
+docker start petstore-mongo
 ```
 
 ---
 
 ## 📡 API Endpoints
 
-### 🔐 Serviço de Autenticação (Auth)
+### 🔐 Authentication Service (Auth)
 
 **Base URL**: `http://localhost:3001`
 
@@ -159,48 +159,48 @@ POST /auth/login
 Content-Type: application/json
 
 {
-  "usuario": "seu_usuario",
-  "senha": "sua_senha"
+  "usuario": "your_username",
+  "senha": "your_password"
 }
 ```
 
-**Resposta de Sucesso (200)**
+**Success Response (200)**
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-#### Validar Token
+#### Validate Token
 ```http
 POST /auth/validaToken
 Content-Type: application/json
 
 {
-  "token": "seu_token_jwt"
+  "token": "your_jwt_token"
 }
 ```
 
-**Resposta de Sucesso (200)**
+**Success Response (200)**
 ```json
 {
   "valido": true,
-  "usuario": "seu_usuario"
+  "usuario": "your_username"
 }
 ```
 
 ---
 
-### 🐾 Serviço de Petstore
+### 🐾 Core Service (Pet Management)
 
 **Base URL**: `http://localhost:3000`
 
-**Autenticação**: Todas as rotas requerem o header `Authorization: Bearer <token>`
+**Authentication**: All routes require `Authorization: Bearer <token>` header
 
-#### Criar Pet
+#### Create Pet
 ```http
 POST /pet
-Authorization: Bearer <seu_token>
+Authorization: Bearer <your_token>
 Content-Type: application/json
 
 {
@@ -210,7 +210,7 @@ Content-Type: application/json
 }
 ```
 
-**Resposta (201)**
+**Response (201)**
 ```json
 {
   "_id": "507f1f77bcf86cd799439011",
@@ -220,13 +220,13 @@ Content-Type: application/json
 }
 ```
 
-#### Listar Todos os Pets
+#### List All Pets
 ```http
 GET /pet
-Authorization: Bearer <seu_token>
+Authorization: Bearer <your_token>
 ```
 
-**Resposta (200)**
+**Response (200)**
 ```json
 [
   {
@@ -238,13 +238,13 @@ Authorization: Bearer <seu_token>
 ]
 ```
 
-#### Buscar Pet por Nome
+#### Search Pets by Name
 ```http
 GET /pet?nome=Rex
-Authorization: Bearer <seu_token>
+Authorization: Bearer <your_token>
 ```
 
-**Resposta (200)**
+**Response (200)**
 ```json
 [
   {
@@ -258,38 +258,38 @@ Authorization: Bearer <seu_token>
 
 ---
 
-### 🚨 Serviço de Monitoramento (Alarmes)
+### 🚨 Monitoring Service (Alarms)
 
 **Base URL**: `http://localhost:3002`
 
-#### Listar Todos os Alarmes
+#### List All Alarms
 ```http
 GET /alarme
 ```
 
-**Resposta (200)**
+**Response (200)**
 ```json
 [
   {
     "id": "MONGO_INDISPONIVEL",
-    "descricao": "MongoDB está indisponível",
+    "descricao": "MongoDB is unavailable",
     "ativo": false,
     "ativacoes": ["2025-12-21T10:30:00Z"]
   }
 ]
 ```
 
-#### Filtrar Alarmes por Status
+#### Filter Alarms by Status
 ```http
 GET /alarme?ativo=true
 ```
 
-#### Ativar Alarme
+#### Activate Alarm
 ```http
 POST /alarme/{id}/ativar
 ```
 
-**Resposta (200)**
+**Response (200)**
 ```json
 {
   "id": "MONGO_INDISPONIVEL",
@@ -297,12 +297,12 @@ POST /alarme/{id}/ativar
 }
 ```
 
-#### Desativar Alarme
+#### Deactivate Alarm
 ```http
 POST /alarme/{id}/desativar
 ```
 
-**Resposta (200)**
+**Response (200)**
 ```json
 {
   "id": "MONGO_INDISPONIVEL",
@@ -312,179 +312,179 @@ POST /alarme/{id}/desativar
 
 ---
 
-## 🧪 Testando com Postman
+## 🧪 Testing with Postman
 
-Uma coleção completa está disponível no arquivo `DM124.postman_collection.json`.
+A complete collection is available in the `Petstore.postman_collection.json` file.
 
-### Como Importar
+### How to Import
 
-1. Abra o Postman
-2. Clique em **Import** (Ctrl+O)
-3. Selecione o arquivo `DM124.postman_collection.json`
-4. Ajuste as variáveis de ambiente conforme necessário
+1. Open Postman
+2. Click **Import** (Ctrl+O)
+3. Select the `Petstore.postman_collection.json` file
+4. Adjust environment variables as needed
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
-DM124-ProjetoReferencia/
-├── auth/                          # Serviço de Autenticação
+petstore-ref-project/
+├── auth/                          # Authentication Service
 │   ├── Dockerfile
-│   ├── index.js                   # Entrada da aplicação
-│   ├── routes.js                  # Definição de rotas
+│   ├── index.js                   # Application entry point
+│   ├── routes.js                  # Route definitions
 │   ├── package.json
 │   └── src/
 │       └── controllers/
-│           └── AuthController.js  # Lógica de autenticação
+│           └── AuthController.js  # Authentication logic
 │
-├── petstore/                      # Serviço de Gerenciamento de Pets
+├── core/                          # Pet Management Service
 │   ├── Dockerfile
 │   ├── index.js
 │   ├── routes.js
 │   ├── package.json
 │   └── src/
 │       ├── controllers/
-│       │   ├── AuthController.js  # Validação de tokens
-│       │   └── PetController.js   # Lógica de negócio
+│       │   ├── AuthController.js  # Token validation
+│       │   └── PetController.js   # Business logic
 │       ├── database/
-│       │   └── config.js          # Configuração MongoDB
+│       │   └── config.js          # MongoDB configuration
 │       ├── models/
-│       │   └── Pet.js             # Schema do Mongoose
+│       │   └── Pet.js             # Mongoose schema
 │       └── service/
-│           └── AlarmeService.js   # Integração com Monitor
+│           └── AlarmeService.js   # Monitor integration
 │
-├── monitor/                       # Serviço de Monitoramento
+├── monitor/                       # Monitoring Service
 │   ├── Dockerfile
 │   ├── index.js
 │   ├── routes.js
 │   ├── package.json
 │   └── src/
 │       └── controllers/
-│           └── AlarmeController.js # Gerenciamento de alarmes
+│           └── AlarmeController.js # Alarm management
 │
 ├── docs/
 │   ├── diagram/
-│   │   └── deployment.puml        # Diagrama da arquitetura
+│   │   └── deployment.puml        # Architecture diagram
 │   └── img/
 │       └── deployment.png
 │
-├── docker-compose.yaml            # Orquestração de contêineres
-├── DM124.postman_collection.json  # Coleção Postman
-├── func.js                        # Funções utilitárias
-├── async.js                       # Helpers de assincronismo
-└── README.md                      # Este arquivo
+├── docker-compose.yaml            # Container orchestration
+├── Petstore.postman_collection.json  # Postman collection
+├── func.js                        # Utility functions
+├── async.js                       # Async helpers
+└── README.md                      # This file
 ```
 
 ---
 
-## 🔧 Dependências Principais
+## 🔧 Main Dependencies
 
-### Todos os Serviços
-- **express** (4.18+): Framework web
-- **dotenv** (16.3+): Gerenciamento de variáveis de ambiente
-- **morgan** (1.10+): Logger HTTP
-- **nodemon** (dev): Reload automático em desenvolvimento
+### All Services
+- **express** (4.18+): Web framework
+- **dotenv** (16.3+): Environment variables management
+- **morgan** (1.10+): HTTP logger
+- **nodemon** (dev): Automatic reload on development
 
 ### Auth
-- **jsonwebtoken** (9.0+): Criação e validação de JWT
+- **jsonwebtoken** (9.0+): JWT creation and validation
 
-### Petstore
-- **mongoose** (8.0+): ODM para MongoDB
-- **axios** (1.6+): Cliente HTTP para comunicação inter-serviços
+### Core
+- **mongoose** (8.0+): MongoDB ODM
+- **axios** (1.6+): HTTP client for inter-service communication
 
 ---
 
-## 🔐 Fluxo de Autenticação
+## 🔐 Authentication Flow
 
 ```
-1. Cliente faz requisição POST /auth/login (usuario + senha)
+1. Client makes POST /auth/login request (username + password)
    ↓
-2. Serviço Auth valida credenciais e gera JWT
+2. Auth service validates credentials and generates JWT
    ↓
-3. Cliente recebe token e armazena
+3. Client receives token and stores it
    ↓
-4. Cliente inclui token em header: Authorization: Bearer <token>
+4. Client includes token in header: Authorization: Bearer <token>
    ↓
-5. Serviço Petstore valida token chamando Auth /auth/validaToken
+5. Core service validates token by calling Auth /auth/validaToken
    ↓
-6. Se válido, operação é executada
-   Se inválido, retorna 401 Unauthorized
+6. If valid, operation is executed
+   If invalid, returns 401 Unauthorized
 ```
 
 ---
 
-## 📊 Sistema de Alarmes
+## 📊 Alarm System
 
-O serviço Monitor gerencia alarmes em tempo real. Alarmes podem ser:
+The Monitor service manages real-time alarms. Alarms can be:
 
-- **MONGO_INDISPONIVEL**: Detectado quando conexão com MongoDB falha
-- **AUTH_INDISPONIVEL**: Serviço de autenticação fora do ar
-- **PETSTORE_ERRO**: Erros críticos no serviço Petstore
+- **MONGO_INDISPONIVEL**: Detected when MongoDB connection fails
+- **AUTH_INDISPONIVEL**: Authentication service is down
+- **PETSTORE_ERRO**: Critical errors in the Core service
 
-Cada alarme possui:
-- `id`: Identificador único
-- `descricao`: Descrição legível
-- `ativo`: Status atual (true/false)
-- `ativacoes`: Histórico de timestamps quando foi acionado
+Each alarm has:
+- `id`: Unique identifier
+- `descricao`: Human-readable description
+- `ativo`: Current status (true/false)
+- `ativacoes`: History of timestamps when triggered
 
 ---
 
-## 🛠️ Desenvolvimento
+## 🛠️ Development
 
-### Adicionando um Novo Endpoint
+### Adding a New Endpoint
 
-1. **Defina a rota** em `routes.js`:
+1. **Define the route** in `routes.js`:
 ```javascript
 router.post('/novo', novoController.criar);
 ```
 
-2. **Implemente a lógica** em `src/controllers/NovoController.js`
+2. **Implement the logic** in `src/controllers/NovoController.js`
 
-3. **Teste via Postman** ou cURL
+3. **Test via Postman** or cURL
 
-### Executando com Hot Reload
+### Running with Hot Reload
 
-Todos os serviços utilizam `nodemon`. Qualquer alteração em arquivo `.js` fará o serviço reiniciar automaticamente.
+All services use `nodemon`. Any change in a `.js` file will automatically restart the service.
 
 ```bash
 npm run dev
 ```
 
-### Logs e Debugging
+### Logs and Debugging
 
-- **Morgan**: Logs HTTP detalhados
-- **Console.log**: Use para debugging adicional
-- **Docker logs**: `docker logs dm124-petstore`
+- **Morgan**: Detailed HTTP logs
+- **Console.log**: Use for additional debugging
+- **Docker logs**: `docker logs petstore-core`
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Erro de Conexão MongoDB
+### MongoDB Connection Error
 ```
 Error: connect ECONNREFUSED 127.0.0.1:27017
 ```
-**Solução**: Verifique se MongoDB está rodando e acessível na URL configurada.
+**Solution**: Verify MongoDB is running and accessible at the configured URL.
 
-### Token Inválido/Expirado
+### Invalid/Expired Token
 ```
 Status: 401 Unauthorized
 ```
-**Solução**: Gere um novo token via `/auth/login` e inclua em todos os headers.
+**Solution**: Generate a new token via `/auth/login` and include it in all headers.
 
-### Porta Já em Uso
+### Port Already in Use
 ```
 Error: listen EADDRINUSE :::3000
 ```
-**Solução**: Altere a `PORT` no `.env` ou mate o processo existente.
+**Solution**: Change the `PORT` in `.env` or kill the existing process.
 
-### Serviços não Comunicam
-**Solução**: Verifique URLs em `AUTH_SERVER` e `MONITOR_SERVER`. Use `docker network ls` para verificar conectividade.
+### Services Can't Communicate
+**Solution**: Check URLs in `AUTH_SERVER` and `MONITOR_SERVER`. Use `docker network ls` to verify connectivity.
 
 ---
 
-## 📚 Recursos Adicionais
+## 📚 Additional Resources
 
 - [Express.js Documentation](https://expressjs.com/)
 - [MongoDB Manual](https://docs.mongodb.com/manual/)
@@ -494,20 +494,22 @@ Error: listen EADDRINUSE :::3000
 
 ---
 
-## 👨‍🏫 Sobre
+## 👨‍🏫 About
 
-Projeto desenvolvido como material de referência para a disciplina **DM124 - Desenvolvimento de Web Services com Segurança** usando Node.js e arquitetura de microserviços.
+Project developed as reference material for the course **DM124 - Development of Web Services with Security on Node.js Platform** using Node.js and microservices architecture.
 
-**Última Atualização**: Dezembro de 2025
+**Last Update**: December 2025
 
-Com o serviço do MongoDB parado você verá este log no serviço **Petstore**:
+## 🔔 Monitoring Behavior
+
+When the MongoDB service is stopped, you'll see this log in the **Core** service:
 
 ```log
-dm124-petstore  | [ATIVAR ALARME] - DB down
-dm124-petstore  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":true,"ativacoes":["2025-05-26T15:29:42.363Z"]}
+petstore-core  | [ATIVAR ALARME] - DB down
+petstore-core  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":true,"ativacoes":["2025-05-26T15:29:42.363Z"]}
 ```
 
-Durante o tempo que o serviço do MongoDB estiver fora do ar, qualquer request para o serviço Petstore retornará `503 Service Unavailable` com o seguinte payload:
+While the MongoDB service is down, any request to the Core service will return `503 Service Unavailable` with the following payload:
 
 ```json
 {
@@ -515,15 +517,15 @@ Durante o tempo que o serviço do MongoDB estiver fora do ar, qualquer request p
 }
 ```
 
-Novamente inicie o serviço do MongoDB com o comando abaixo:
+Start the MongoDB service again with the command below:
 
 ```shell
-docker start dm124-mongo
+docker start petstore-mongo
 ```
 
-Com o serviço do MongoDB parado você verá este log no serviço **Petstore**:
+With the MongoDB service restarted, you'll see this log in the **Core** service:
 
 ```log
-dm124-petstore  | [DESATIVAR ALARME] - DB up
-dm124-petstore  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":false,"ativacoes":[]}
+petstore-core  | [DESATIVAR ALARME] - DB up
+petstore-core  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":false,"ativacoes":[]}
 ```
