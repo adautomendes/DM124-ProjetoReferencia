@@ -43,8 +43,8 @@ Um exemplo didático completo de arquitetura de microserviços com autenticaçã
 
 - **Node.js** 18+ ([download](https://nodejs.org/))
 - **npm** 9+ (incluído no Node.js)
-- **MongoDB** ([local](https://docs.mongodb.com/manual/installation/) ou [Atlas](https://www.mongodb.com/cloud/atlas))
-- **Docker** e **Docker Compose** (opcional, para containerização)
+- **MongoDB**
+- **Docker** e **Docker Compose**
 
 ### Instalação Local
 
