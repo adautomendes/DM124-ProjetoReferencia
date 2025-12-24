@@ -14,7 +14,7 @@ const mongoose = require(`mongoose`);
 // Importe as configurações do BD
 const DB = require(`./src/database/config`);
 // Importe o serviço de alarmes
-const AlarmeService = require('./src/service/AlarmeService');
+const AlarmService = require('./src/service/AlarmService');
 
 // Crie uma aplicação Express
 const app = express();
@@ -50,23 +50,23 @@ if (process.env.NODE_ENV === 'dev') {
 let dbUp = true;
 
 mongoose.connection.on('connected', () => {
-    console.log(`[DESATIVAR ALARME] - DB up`);
+    console.log(`[CEASE ALARM] - DB up`);
     dbUp = true;
-    AlarmeService.gerenciarAlarme('DB_0001', 'desativar');
+    AlarmService.handleAlarm('DB_0001', 'cease');
 });
 
 mongoose.connection.on('disconnected', () => {
-    console.log(`[ATIVAR ALARME] - DB down`);
+    console.log(`[RAISE ALARM] - DB down`);
     dbUp = false;
-    AlarmeService.gerenciarAlarme('DB_0001', 'ativar');
+    AlarmService.handleAlarm('DB_0001', 'raise');
 });
 
 app.use((req, res, next) => {
-    console.log(`[MIDDLEWARE] - Health Check do MongoDB`);
+    console.log(`[MIDDLEWARE] - MongoDB Health Check`);
     if (dbUp) {
         next();
     } else {
-        return res.status(503).json({ msg: "MongoDB fora do ar." });
+        return res.status(503).json({ msg: "MongoDB service unavailable." });
     }
 });
 
@@ -75,14 +75,14 @@ app.use(routes);
 
 //Configure a conexão com o MongoDB
 mongoose.connect(DB.DB_URL, DB.DB_SETTINGS)
-    .then(() => console.log(`Conectado ao MongoDB: ${DB.DB_URL}`))
-    .catch(err => console.log(`Erro ao conectar ao MongoDB: ${err}`));
+    .then(() => console.log(`Connected to MongoDB: ${DB.DB_URL}`))
+    .catch(err => console.log(`Error connecting to MongoDB: ${err}`));
 
 // Configure a porta para o servidor escutar
-const porta = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 // Inicie o servidor e escute na porta especificada
-app.listen(porta, () => {
-    console.log(`O servidor está rodando em http://localhost:${porta}`);
+app.listen(port, () => {
+    console.log(`The server is running at http://localhost:${port}`);
 });
 

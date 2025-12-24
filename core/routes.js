@@ -10,7 +10,7 @@ const AuthController = require('./src/controllers/AuthController');
 const rootRouter = express.Router();
 
 rootRouter.get(`/`, (req, res) => { // Rota raiz da aplicação
-    res.send('Olá, Mundo!');
+    res.send('Hello world!');
 });
 
 // Router para as operações de Pet
@@ -18,11 +18,10 @@ const petRouter = express.Router();
 
 // Definindo caminho para o router Pet dentro do router Raiz
 // Isto cria uma hierarquia entre os routers
-rootRouter.use(`/pet`, AuthController.verificaJWT, petRouter);
+rootRouter.use(`/pet`, AuthController.validateJWT, petRouter);
 
 // Definindo rotas para o router /pet
-petRouter.post(`/`, PetController.inserir);
-petRouter.get(`/`, PetController.buscar);
-
+petRouter.post(`/`, PetController.insert);
+petRouter.get(`/`, PetController.search);
 module.exports = rootRouter;
 

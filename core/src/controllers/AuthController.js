@@ -2,11 +2,11 @@ const axios = require(`axios`);
 require(`dotenv`).config();
 
 module.exports = {
-    verificaJWT(req, res, next) {
+    validateJWT(req, res, next) {
         const tokenRequest = req.headers.token;
 
         let request = {
-            url: `${process.env.AUTH_SERVER}/auth/validaToken`,
+            url: `${process.env.AUTH_SERVER}/auth/validateToken`,
             data: {},
             config: {
                 headers: {
@@ -15,14 +15,14 @@ module.exports = {
             }
         };
 
-        console.log(`Enviando token para [${request.url}]`);
+        console.log(`Sending token to [${request.url}]`);
         axios.post(request.url, request.data, request.config)
             .then((response) => {
                 console.log(`Token OK!`);
                 next();
             })
             .catch((error) => {
-                console.error(`Token inválido.`);
+                console.error(`Invalid token.`);
                 return res.status(error.response.status).json({ error });
             });
     }

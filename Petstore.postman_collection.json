@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "104b62e0-91f5-4903-bb42-b7191cdfd109",
+		"_postman_id": "2772989a-28bb-4e2f-ba22-6ebbd0233005",
 		"name": "Petstore",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3823780"
@@ -50,7 +50,7 @@
 					"response": []
 				},
 				{
-					"name": "Valida Token",
+					"name": "Validate Token",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -61,7 +61,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3001/auth/validaToken",
+							"raw": "http://localhost:3001/auth/validateToken",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -69,7 +69,7 @@
 							"port": "3001",
 							"path": [
 								"auth",
-								"validaToken"
+								"validateToken"
 							]
 						}
 					},
@@ -81,7 +81,7 @@
 			"name": "Core",
 			"item": [
 				{
-					"name": "Get Raiz",
+					"name": "Get Root",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -97,7 +97,7 @@
 					"response": []
 				},
 				{
-					"name": "Inserir Pet",
+					"name": "Insert Pet",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -106,7 +106,8 @@
 									"pm.globals.set(\"petSuffix\", new Date());"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -117,7 +118,8 @@
 									"pm.globals.set(\"petRaca\", pm.response.json().raca);"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -132,7 +134,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Rex {{petSuffix}}\",\r\n    \"raca\": \"Boxer\",\r\n    \"idade\": 22\r\n}",
+							"raw": "{\r\n    \"name\": \"Rex {{petSuffix}}\",\r\n    \"breed\": \"Boxer\",\r\n    \"age\": 22\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -154,7 +156,7 @@
 					"response": []
 				},
 				{
-					"name": "Atualizar Pet",
+					"name": "Update Pet",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -189,7 +191,7 @@
 					"response": []
 				},
 				{
-					"name": "Buscar todos Pets",
+					"name": "Find all Pets",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -214,7 +216,7 @@
 					"response": []
 				},
 				{
-					"name": "Buscar Pet por Nome",
+					"name": "Find Pet by Name",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -249,7 +251,7 @@
 					"response": []
 				},
 				{
-					"name": "Excluir Pet",
+					"name": "Delete Pet",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -280,7 +282,7 @@
 			"name": "Monitor",
 			"item": [
 				{
-					"name": "Ativar",
+					"name": "Raise",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -291,61 +293,61 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3002/alarme/DB_0001/ativar",
+							"raw": "http://localhost:3002/alarm/DB_0001/raise",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"alarme",
+								"alarm",
 								"DB_0001",
-								"ativar"
+								"raise"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Desativar",
+					"name": "Cease",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/alarme/DB_0001/desativar",
+							"raw": "http://localhost:3002/alarm/DB_0001/cease",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"alarme",
+								"alarm",
 								"DB_0001",
-								"desativar"
+								"cease"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Listar",
+					"name": "List by Raised",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/alarme?ativado=true",
+							"raw": "http://localhost:3002/alarm?raised=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"alarme"
+								"alarm"
 							],
 							"query": [
 								{
-									"key": "ativado",
-									"value": "true"
+									"key": "raised",
+									"value": "false"
 								}
 							]
 						}

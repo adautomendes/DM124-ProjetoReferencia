@@ -7,7 +7,7 @@ const AuthController = require(`./src/controllers/AuthController`);
 const rootRouter = express.Router();
 
 rootRouter.get(`/`, (req, res) => { // Rota raiz da aplicação
-    res.send('Olá, Mundo!');
+    res.send('Hello world!');
 });
 
 // Router para as operações de Auth
@@ -19,7 +19,6 @@ rootRouter.use(`/auth`, authRouter);
 
 // Definindo rotas para o router /auth
 authRouter.post(`/login`, AuthController.login); // /auth/login
-authRouter.post(`/validaToken`, AuthController.verificaJWT); // /auth/validaToken
-
+authRouter.post(`/validateToken`, AuthController.validateJWT); // /auth/validateToken
 module.exports = rootRouter;
 

@@ -1,41 +1,41 @@
 const Pet = require(`../models/Pet`);
 
 module.exports = {
-    async inserir(req, res) {
+    async insert(req, res) {
         const petRequest = req.body;
 
         // Testando se já existe um Pet com o mesmo nome
         // Equivalente a 'SELECT * FROM pet WHERE nome = pet.nome'
-        const petExistente = await Pet.findOne({ nome: petRequest.nome });
+        const petExisting = await Pet.findOne({ name: petRequest.name });
 
-        if (petExistente) {
-            console.log(`${petExistente.nome} já existe.`);
+        if (petExisting) {
+            console.log(`${petExisting.name} already exists.`);
             // Retornando 200 pois nada foi inserido.
-            return res.status(200).json(petExistente);
+            return res.status(200).json(petExisting);
         }
 
         const pet = await Pet.create({
-            nome: petRequest.nome,
-            raca: petRequest.raca,
-            idade: petRequest.idade
+            name: petRequest.name,
+            breed: petRequest.breed,
+            age: petRequest.age
         });
 
-        console.log(`${pet.nome} criado!`);
+        console.log(`${pet.name} created!`);
         // Retornando 201 pois um novo recurso foi inserido.
         return res.status(201).json(pet);
     },
 
-    async buscar(req, res) {
-        const nomeQuery = req.query.nome;
+    async search(req, res) {
+        const nameQuery = req.query.name;
         let pets = [];
 
-        if (nomeQuery) {
-            pets = await Pet.find({ nome: nomeQuery });
+        if (nameQuery) {
+            pets = await Pet.find({ name: nameQuery });
         } else {
             pets = await Pet.find();
         }
 
-        console.log(`${pets.length} pets encontrados!`);
+        console.log(`${pets.length} pets found!`);
 
         return res.status(200).json(pets);
     },

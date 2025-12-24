@@ -44,10 +44,10 @@ if (process.env.NODE_ENV === 'dev') {
 app.use(routes);
 
 // Configure a porta para o servidor escutar
-const porta = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;
 
 // Inicie o servidor e escute na porta especificada
-app.listen(porta, () => {
-    console.log(`O servidor está rodando em http://localhost:${porta}`);
+app.listen(port, () => {
+    console.log(`The server is running at http://localhost:${port}`);
 });
 

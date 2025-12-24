@@ -1,26 +1,26 @@
 const express = require(`express`);
 
 // Importando o AlarmeController
-const AlarmeController = require('./src/controllers/AlarmeController');
+const AlarmController = require('./src/controllers/AlarmController');
 
 // Router raiz da aplicação
 const rootRouter = express.Router();
 
 rootRouter.get(`/`, (req, res) => { // Rota raiz da aplicação
-    res.send('Olá, Mundo!');
+    res.send('Hello world!');
 });
 
 // Router para as operações de Alarme
-const alarmeRouter = express.Router();
+const alarmRouter = express.Router();
 
 // Definindo caminho para o router Alarme dentro do router Raiz
 // Isto cria uma hierarquia entre os routers
-rootRouter.use(`/alarme`, alarmeRouter);
+rootRouter.use(`/alarm`, alarmRouter);
 
-// Definindo rotas para o router /alarme
-alarmeRouter.post(`/:id/ativar`, AlarmeController.ativar);
-alarmeRouter.post(`/:id/desativar`, AlarmeController.desativar);
-alarmeRouter.get(`/`, AlarmeController.buscar);
+// Definindo rotas para o router /alarm
+alarmRouter.post(`/:id/raise`, AlarmController.raise);
+alarmRouter.post(`/:id/cease`, AlarmController.cease);
+alarmRouter.get(`/`, AlarmController.search);
 
 module.exports = rootRouter;
 

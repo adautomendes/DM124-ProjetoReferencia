@@ -173,7 +173,7 @@ Content-Type: application/json
 
 #### Validate Token
 ```http
-POST /auth/validaToken
+POST /auth/validateToken
 Content-Type: application/json
 
 {
@@ -184,8 +184,8 @@ Content-Type: application/json
 **Success Response (200)**
 ```json
 {
-  "valido": true,
-  "usuario": "your_username"
+  "user": "your_username",
+  "token": "<...>",
 }
 ```
 
@@ -264,49 +264,49 @@ Authorization: Bearer <your_token>
 
 #### List All Alarms
 ```http
-GET /alarme
+GET /alarm
 ```
 
 **Response (200)**
 ```json
 [
   {
-    "id": "MONGO_INDISPONIVEL",
-    "descricao": "MongoDB is unavailable",
-    "ativo": false,
-    "ativacoes": ["2025-12-21T10:30:00Z"]
+    "id": "DB_0001",
+    "description": "MongoDB service unavailable.",
+    "raised": false,
+    "activations": ["2025-12-21T10:30:00Z"]
   }
 ]
 ```
 
 #### Filter Alarms by Status
 ```http
-GET /alarme?ativo=true
+GET /alarm?raised=true
 ```
 
 #### Activate Alarm
 ```http
-POST /alarme/{id}/ativar
+POST /alarm/{id}/raise
 ```
 
 **Response (200)**
 ```json
 {
-  "id": "MONGO_INDISPONIVEL",
-  "ativo": true
+  "id": "DB_0001",
+  "raised": true
 }
 ```
 
 #### Deactivate Alarm
 ```http
-POST /alarme/{id}/desativar
+POST /alarm/{id}/cease
 ```
 
 **Response (200)**
 ```json
 {
-  "id": "MONGO_INDISPONIVEL",
-  "ativo": false
+  "id": "DB_0001",
+  "raised": false
 }
 ```
 
@@ -352,7 +352,7 @@ petstore-ref-project/
 │       ├── models/
 │       │   └── Pet.js             # Mongoose schema
 │       └── service/
-│           └── AlarmeService.js   # Monitor integration
+│           └── AlarmService.js   # Monitor integration
 │
 ├── monitor/                       # Monitoring Service
 │   ├── Dockerfile
@@ -361,7 +361,7 @@ petstore-ref-project/
 │   ├── package.json
 │   └── src/
 │       └── controllers/
-│           └── AlarmeController.js # Alarm management
+│           └── AlarmController.js # Alarm management
 │
 ├── docs/
 │   ├── diagram/
@@ -406,7 +406,7 @@ petstore-ref-project/
    ↓
 4. Client includes token in header: Authorization: Bearer <token>
    ↓
-5. Core service validates token by calling Auth /auth/validaToken
+5. Core service validates token by calling Auth /auth/validateToken
    ↓
 6. If valid, operation is executed
    If invalid, returns 401 Unauthorized
@@ -418,15 +418,13 @@ petstore-ref-project/
 
 The Monitor service manages real-time alarms. Alarms can be:
 
-- **MONGO_INDISPONIVEL**: Detected when MongoDB connection fails
-- **AUTH_INDISPONIVEL**: Authentication service is down
-- **PETSTORE_ERRO**: Critical errors in the Core service
+- **DB_0001**: Detected when MongoDB connection fails
 
 Each alarm has:
 - `id`: Unique identifier
-- `descricao`: Human-readable description
-- `ativo`: Current status (true/false)
-- `ativacoes`: History of timestamps when triggered
+- `description`: Human-readable description
+- `raised`: Current status (true/false)
+- `activations`: History of timestamps when triggered
 
 ---
 
@@ -505,15 +503,15 @@ Project developed as reference material for the course **DM124 - Development of 
 When the MongoDB service is stopped, you'll see this log in the **Core** service:
 
 ```log
-petstore-core  | [ATIVAR ALARME] - DB down
-petstore-core  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":true,"ativacoes":["2025-05-26T15:29:42.363Z"]}
+petstore-core  | [RAISE ALARM] - DB down
+petstore-core  | Alarm changed: {"id":"DB_0001","description":"MongoDB service unavailable.","raised":true,"activations":["2025-05-26T15:29:42.363Z"]}
 ```
 
 While the MongoDB service is down, any request to the Core service will return `503 Service Unavailable` with the following payload:
 
 ```json
 {
-    "msg": "MongoDB fora do ar."
+    "msg": "MongoDB service unavailable."
 }
 ```
 
@@ -526,6 +524,6 @@ docker start petstore-mongo
 With the MongoDB service restarted, you'll see this log in the **Core** service:
 
 ```log
-petstore-core  | [DESATIVAR ALARME] - DB up
-petstore-core  | Alarme alterado: {"id":"DB_0001","descricao":"MongoDB fora do ar.","ativo":false,"ativacoes":[]}
+petstore-core  | [CEASE ALARM] - DB up
+petstore-core  | Alarm changed: {"id":"DB_0001","description":"MongoDB service unavailable.","raised":false,"activations":[]}
 ```

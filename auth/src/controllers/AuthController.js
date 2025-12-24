@@ -7,32 +7,31 @@ module.exports = {
         let pass = req.body.pass;
 
         if (user && pass) {
-            let token = jwt.sign({ user, pass }, process.env.CHAVE_PRIVADA, {
-                expiresIn: `${process.env.TEMPO_EXP}`
+            let token = jwt.sign({ user, pass }, process.env.PRIVATE_KEY, {
+                expiresIn: `${process.env.TOKEN_EXP}`
             });
 
-            console.log(`Usuário ${user} logado.`);
-            return res.status(200).json({ token, expiresIn: `${process.env.TEMPO_EXP}` });
+            console.log(`User ${user} logged in.`);
+            return res.status(200).json({ token, expiresIn: `${process.env.TOKEN_EXP}` });
         } else {
-            return res.status(401).json({ msg: `Login inválido.` });
+            return res.status(401).json({ msg: `Invalid login.` });
         }
     },
 
-    verificaJWT(req, res) {
+    validateJWT(req, res) {
         const tokenRequest = req.headers.token;
 
         if (tokenRequest) {
-            console.log(`Verificando token ${tokenRequest.slice(0, 10)}...`);
-
-            jwt.verify(tokenRequest, process.env.CHAVE_PRIVADA, (error, decoded) => {
+            console.log(`Verifying token ${tokenRequest.slice(0, 10)}...`);
+            jwt.verify(tokenRequest, process.env.PRIVATE_KEY, (error, decoded) => {
                 if (error) {
-                    return res.status(401).json({ msg: `Token inválido.`, token: tokenRequest, error });
+                    return res.status(401).json({ msg: `Invalid token.`, token: tokenRequest, error });
                 } else {
                     return res.status(200).json({ user: decoded.user, token: tokenRequest });
                 }
             });
         } else {
-            return res.status(401).json({ msg: `Token não fornecido.` });
+            return res.status(401).json({ msg: `Token not provided.` });
         }
     },
 };

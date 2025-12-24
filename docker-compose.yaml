@@ -23,7 +23,7 @@ services:
     environment:
       - PORT=3001
       - NODE_ENV=prod
-      - TEMPO_EXP=1m
+      - TOKEN_EXP=1m
 
   petstore-monitor:
     build:
